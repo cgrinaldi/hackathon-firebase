@@ -2,6 +2,7 @@
 <head>
   <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="script.js"></script>
   <link rel="stylesheet" type="text/css" href="/resources/tutorial/css/example.css">
 </head>
 <body>
@@ -20,9 +21,10 @@
 </div>
 <script>
   var LEADERBOARD_SIZE = 5;
+  var counter = 0;
 
   // Create our Firebase reference
-  var scoreListRef = new Firebase('https://y478akpk0ri.firebaseio-demo.com//scoreList');
+  var scoreListRef = new Firebase('https://amber-heat-4078.firebaseio.com/');
 
   // Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
   var htmlForPath = {};
@@ -77,8 +79,9 @@
   // When the user presses enter on scoreInput, add the score, and update the highest score.
   $("#quoteButton").click(function () {
     getQuote(function(quote) {
+      quote = quote.split('.').join(',');
       var userScoreRef = scoreListRef.child(quote);
-      userScoreRef.setWithPriority({ quote:quote, score:0 }, score);
+      userScoreRef.push({ quote:quote, score:0 });
     });
   });
 </script>
