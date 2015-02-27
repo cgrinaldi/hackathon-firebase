@@ -3,10 +3,11 @@ h1 {
   color: white;
   font-size: 2.9em;
   text-shadow: 3px 3px 1px #888;
+  font-family: 'Rye', cursive;
 }
 
 body {
-  font-family: arial;
+  font-family: 'Lato', sans-serif;
   color: #333;
   background: url(chuck-bg.jpg);
 }
