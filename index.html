@@ -3,21 +3,17 @@
   <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script src="script.js"></script>
-  <link rel="stylesheet" type="text/css" href="/resources/tutorial/css/example.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/resources/tutorial/css/example.css"> -->
 </head>
 <body>
 <div class="example-base example-leaderboard l-demo-container">
   <button type="button" id="quoteButton">New Quote</button>
   <table id="leaderboardTable">
     <tr>
-      <th>Player</th>
-      <th>Score</th>
+      <th>Quote</th>
+      <th>Votes</th>
     </tr>
   </table>
-  <footer>
-    <input class="example-leaderboard-name" type="text" id="nameInput" placeholder="Enter a name">
-    <input class="example-leaderboard-score" type="text" id="scoreInput" placeholder="Record your score...">
-  </footer>
 </div>
 <script>
   var LEADERBOARD_SIZE = 5;
@@ -32,7 +28,9 @@
   // Helper function that takes a new score snapshot and adds an appropriate row to our leaderboard table.
   function handleScoreAdded(scoreSnapshot, prevScoreName) {
     var newScoreRow = $("<tr/>");
-    newScoreRow.append($("<td/>").append($("<em/>").text(scoreSnapshot.val().name)));
+    console.log(scoreSnapshot.val());
+    // console.log(scoreSnapshot.val()[].quote);
+    newScoreRow.append($("<td/>").append($("<em/>").text(scoreSnapshot.val().quote)));
     newScoreRow.append($("<td/>").text(scoreSnapshot.val().score));
 
     // Store a reference to the table row so we can get it again later.
@@ -61,6 +59,7 @@
   // Add a callback to handle when a new score is added.
   scoreListView.on('child_added', function (newScoreSnapshot, prevScoreName) {
     handleScoreAdded(newScoreSnapshot, prevScoreName);
+    // console.log(newScoreSnapshot.val().quote);
   });
 
   // Add a callback to handle when a score is removed
@@ -81,8 +80,13 @@
     getQuote(function(quote) {
       quote = quote.split('.').join(',');
       var userScoreRef = scoreListRef.child(quote);
-      userScoreRef.push({ quote:quote, score:0 });
+      userScoreRef.set({ quote:quote, score:0 });
     });
+  });
+
+  $("#quote").click(function () {
+    var userScoreRef = scoreListRef.child(newScoreSnapshot.val().quote);
+    userScoreRef.update({ score:0 });
   });
 </script>
 </body>
