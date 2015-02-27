@@ -6,6 +6,7 @@
 </head>
 <body>
 <div class="example-base example-leaderboard l-demo-container">
+  <button type="button" id="quoteButton">New Quote</button>
   <table id="leaderboardTable">
     <tr>
       <th>Player</th>
@@ -74,20 +75,11 @@
   scoreListView.on('child_changed', changedCallback);
 
   // When the user presses enter on scoreInput, add the score, and update the highest score.
-  $("#scoreInput").keypress(function (e) {
-    if (e.keyCode == 13) {
-      var newScore = Number($("#scoreInput").val());
-      var name = $("#nameInput").val();
-      $("#scoreInput").val("");
-
-      if (name.length === 0)
-    return;
-
-      var userScoreRef = scoreListRef.child(name);
-
-      // Use setWithPriority to put the name / score in Firebase, and set the priority to be the score.
-      userScoreRef.setWithPriority({ quote:quote, score:0 }, newScore);
-    }
+  $("#quoteButton").click(function () {
+    getQuote(function(quote) {
+      var userScoreRef = scoreListRef.child(quote);
+      userScoreRef.setWithPriority({ quote:quote, score:0 }, score);
+    });
   });
 </script>
 </body>
