@@ -22,16 +22,19 @@
   // Create our Firebase reference
   var scoreListRef = new Firebase('https://amber-heat-4078.firebaseio.com/');
 
-  // Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
   var htmlForPath = {};
 
-  // Helper function that takes a new score snapshot and adds an appropriate row to our leaderboard table.
   function handleScoreAdded(scoreSnapshot, prevScoreName) {
     var newScoreRow = $("<tr/>");
-    console.log(scoreSnapshot.val());
-    // console.log(scoreSnapshot.val()[].quote);
+
     newScoreRow.append($("<td/>").append($("<em/>").text(scoreSnapshot.val().quote)));
     newScoreRow.append($("<td/>").text(scoreSnapshot.val().score));
+    newScoreRow.click(function () {
+      var chuck = scoreSnapshot.val();
+      var userScoreRef = scoreListRef.child(chuck.quote);
+      chuck.score++;
+      userScoreRef.update({ score: chuck.score });
+    });
 
     // Store a reference to the table row so we can get it again later.
     htmlForPath[scoreSnapshot.key()] = newScoreRow;
@@ -75,18 +78,13 @@
   scoreListView.on('child_moved', changedCallback);
   scoreListView.on('child_changed', changedCallback);
 
-  // When the user presses enter on scoreInput, add the score, and update the highest score.
+  // When the user adds a new quote, add the score, and update the highest score.
   $("#quoteButton").click(function () {
     getQuote(function(quote) {
       quote = quote.split('.').join(',');
       var userScoreRef = scoreListRef.child(quote);
       userScoreRef.set({ quote:quote, score:0 });
     });
-  });
-
-  $("#quote").click(function () {
-    var userScoreRef = scoreListRef.child(newScoreSnapshot.val().quote);
-    userScoreRef.update({ score:0 });
   });
 </script>
 </body>
