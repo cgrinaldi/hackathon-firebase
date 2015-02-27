@@ -16,7 +16,7 @@
   </table>
 </div>
 <script>
-  var LEADERBOARD_SIZE = 5;
+  var LEADERBOARD_SIZE = 10;
   var counter = 0;
 
   // Create our Firebase reference
@@ -45,6 +45,7 @@
     }
     else {
       var lowerScoreRow = htmlForPath[prevScoreName];
+      console.log(scoreSnapshot.val().score);
       lowerScoreRow.before(newScoreRow);
     }
   }
@@ -60,13 +61,12 @@
   var scoreListView = scoreListRef.limitToLast(LEADERBOARD_SIZE);
 
   // Add a callback to handle when a new score is added.
-  scoreListView.on('child_added', function (newScoreSnapshot, prevScoreName) {
+  scoreListView.orderByChild("score").on('child_added', function (newScoreSnapshot, prevScoreName) {
     handleScoreAdded(newScoreSnapshot, prevScoreName);
-    // console.log(newScoreSnapshot.val().quote);
   });
 
   // Add a callback to handle when a score is removed
-  scoreListView.on('child_removed', function (oldScoreSnapshot) {
+  scoreListView.orderByChild("score").on('child_removed', function (oldScoreSnapshot) {
     handleScoreRemoved(oldScoreSnapshot);
   });
 
@@ -75,15 +75,15 @@
     handleScoreRemoved(scoreSnapshot);
     handleScoreAdded(scoreSnapshot, prevScoreName);
   };
-  scoreListView.on('child_moved', changedCallback);
-  scoreListView.on('child_changed', changedCallback);
+  scoreListView.orderByChild("score").on('child_moved', changedCallback);
+  scoreListView.orderByChild("score").on('child_changed', changedCallback);
 
   // When the user adds a new quote, add the score, and update the highest score.
   $("#quoteButton").click(function () {
     getQuote(function(quote) {
       quote = quote.split('.').join(',');
       var userScoreRef = scoreListRef.child(quote);
-      userScoreRef.set({ quote:quote, score:0 });
+      userScoreRef.set({ quote: quote, score: 0 });
     });
   });
 </script>
