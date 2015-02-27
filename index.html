@@ -4,8 +4,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script src="script.js"></script>
   <!-- <link rel="stylesheet" type="text/css" href="/resources/tutorial/css/example.css"> -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<h1>Chuck Norris Voter</h1>
 <div class="example-base example-leaderboard l-demo-container">
   <button type="button" id="quoteButton">New Quote</button>
   <table id="leaderboardTable">
@@ -20,7 +22,7 @@
   var counter = 0;
 
   // Create our Firebase reference
-  var scoreListRef = new Firebase('https://scorching-torch-6170.firebaseio.com/');
+  var scoreListRef = new Firebase('https://amber-heat-4078.firebaseio.com/');
 
   var htmlForPath = {};
 

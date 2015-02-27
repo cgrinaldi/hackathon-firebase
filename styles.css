@@ -1,0 +1,21 @@
+h1 {
+  text-align: center;
+}
+
+body {
+  font-family: arial;
+}
+
+div.example-base {
+  width: 700px;
+  margin: 0 auto;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 1em;
+}
+
+td {
+  font-size: 1.1em;
+}
